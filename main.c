@@ -58,14 +58,14 @@ void bye()
 	SDL_Quit();
 }
 
-bool events(SDL_Event e, bool playing)
+int events(SDL_Event e, bool playing)
 {
 	int mouseX;
 	int mouseY;
 
 	while(SDL_PollEvent(&e) != 0) {
 		if(e.type == SDL_QUIT) {
-			playing = false;
+			return 5;
 		}
 		
 		if(e.type == SDL_MOUSEBUTTONDOWN && mouseX >= 10 && mouseX <= 110 && mouseY >= 10 && mouseY <= 110) {
@@ -74,15 +74,18 @@ bool events(SDL_Event e, bool playing)
 				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 				SDL_RenderFillRect(renderer, &squareOne);
 				SDL_RenderPresent(renderer);
+
+				return 1;
 			}
 		}
-
 		else if(e.type == SDL_MOUSEBUTTONDOWN && mouseX >= 10 && mouseX <= 110 && mouseY >= 120 && mouseY <= 220) {
 			if(e.button.button == SDL_BUTTON_LEFT) {
 				//SDL_ShowSimpleMessageBox(0, "Mouse", "Yellow box clicked!", window);
 				SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
 				SDL_RenderFillRect(renderer, &squareTwo);
 				SDL_RenderPresent(renderer);
+
+				return 2;
 			}
 		}
 		else if(e.type == SDL_MOUSEBUTTONDOWN && mouseX >= 120 && mouseX <= 220 && mouseY >= 10 && mouseY <= 110) {
@@ -91,6 +94,8 @@ bool events(SDL_Event e, bool playing)
 				SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 				SDL_RenderFillRect(renderer, &squareThree);
 				SDL_RenderPresent(renderer);
+
+				return 3;
 			}
 		}
 		else if(e.type == SDL_MOUSEBUTTONDOWN && mouseX >= 120 && mouseX <= 220 && mouseY >= 120 && mouseY <= 220) {
@@ -99,6 +104,8 @@ bool events(SDL_Event e, bool playing)
 				SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 				SDL_RenderFillRect(renderer, &squareFour);
 				SDL_RenderPresent(renderer);
+
+				return 4;
 			}
 		}
 
@@ -122,7 +129,7 @@ bool events(SDL_Event e, bool playing)
 		}
 	} 
 	
-	return playing;
+	return 0;
 }
 
 int main(int argc, char *argv[])
@@ -131,10 +138,37 @@ int main(int argc, char *argv[])
 	renderSquares();
 
 	SDL_Event e;
-	bool playing = true;
+	int score = 0;
+	int roundOne[4] = {2, 3, 3, 4};
 
-	while(playing) {
-		playing = events(e, playing);
+	while(1) {
+		//playPattern();
+
+		int i = 0;
+		int selection;
+		
+		for(i = 0; i <= 3; i++) {
+			selection = 0;
+
+			while(selection == 0) {
+				selection = events(e, selection);
+			}
+
+			if(selection == roundOne[i]) {
+				score++;
+			}
+			else if(selection == 5) {
+				break;
+			}
+			else {
+				SDL_ShowSimpleMessageBox(0, "Wrong!", "Incorrect! Start over..", window);
+				break;
+			}
+		}
+
+		if(selection == 5) {
+			break;			
+		}
 	}
 
 	bye();

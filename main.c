@@ -68,6 +68,20 @@ int events(SDL_Event e)
 			return 5;
 		}
 		
+		if(e.type == SDL_MOUSEBUTTONUP) {
+			if(e.button.button == SDL_BUTTON_LEFT) {
+				SDL_SetRenderDrawColor(renderer, 0, 50, 0, 255);
+				SDL_RenderFillRect(renderer, &squareOne);
+				SDL_SetRenderDrawColor(renderer, 50, 50, 0, 255);
+				SDL_RenderFillRect(renderer, &squareTwo);
+				SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
+				SDL_RenderFillRect(renderer, &squareThree);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 50, 255);
+				SDL_RenderFillRect(renderer, &squareFour);
+				SDL_RenderPresent(renderer);
+			}
+		}
+
 		if(e.type == SDL_MOUSEBUTTONDOWN && mouseX >= 10 && mouseX <= 110 && mouseY >= 10 && mouseY <= 110) {
 			if(e.button.button == SDL_BUTTON_LEFT) {
 				//SDL_ShowSimpleMessageBox(0, "Mouse", "Green box clicked!", window);
@@ -109,20 +123,6 @@ int events(SDL_Event e)
 			}
 		}
 
-		if(e.type == SDL_MOUSEBUTTONUP) {
-			if(e.button.button == SDL_BUTTON_LEFT) {
-				SDL_SetRenderDrawColor(renderer, 0, 50, 0, 255);
-				SDL_RenderFillRect(renderer, &squareOne);
-				SDL_SetRenderDrawColor(renderer, 50, 50, 0, 255);
-				SDL_RenderFillRect(renderer, &squareTwo);
-				SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
-				SDL_RenderFillRect(renderer, &squareThree);
-				SDL_SetRenderDrawColor(renderer, 0, 0, 50, 255);
-				SDL_RenderFillRect(renderer, &squareFour);
-				SDL_RenderPresent(renderer);
-			}
-		}
-
 		if(e.type == SDL_MOUSEMOTION) {
 			mouseX = e.motion.x;
 			mouseY = e.motion.y;
@@ -130,6 +130,66 @@ int events(SDL_Event e)
 	} 
 	
 	return 0;
+}
+
+void playPattern() {
+	SDL_SetRenderDrawColor(renderer, 0, 50, 0, 255);
+	SDL_RenderFillRect(renderer, &squareOne);
+	SDL_SetRenderDrawColor(renderer, 50, 50, 0, 255);
+	SDL_RenderFillRect(renderer, &squareTwo);
+	SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &squareThree);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 50, 255);
+	SDL_RenderFillRect(renderer, &squareFour);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(1000);
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+	SDL_RenderFillRect(renderer, &squareTwo);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 50, 50, 0, 255);
+	SDL_RenderFillRect(renderer, &squareTwo);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &squareThree);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &squareThree);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &squareThree);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &squareThree);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	SDL_RenderFillRect(renderer, &squareFour);
+	SDL_RenderPresent(renderer);
+
+	SDL_Delay(250);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 50, 255);
+	SDL_RenderFillRect(renderer, &squareFour);
+	SDL_RenderPresent(renderer);
 }
 
 int main(int argc, char *argv[])
@@ -142,7 +202,7 @@ int main(int argc, char *argv[])
 	int roundOne[4] = {2, 3, 3, 4};
 
 	while(1) {
-		//playPattern();
+		playPattern();
 
 		int i = 0;
 		int selection;
@@ -156,6 +216,10 @@ int main(int argc, char *argv[])
 
 			if(selection == roundOne[i]) {
 				score++;
+				
+				if(score == 4) {
+					SDL_ShowSimpleMessageBox(0, "Correct!", "Good job!", window);
+				}
 			}
 			else if(selection == 5) {
 				break;

@@ -28,6 +28,18 @@ void init()
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
+void resetSquares() {
+	SDL_SetRenderDrawColor(renderer, 0, 50, 0, 255);
+	SDL_RenderFillRect(renderer, &squareOne);
+	SDL_SetRenderDrawColor(renderer, 50, 50, 0, 255);
+	SDL_RenderFillRect(renderer, &squareTwo);
+	SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &squareThree);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 50, 255);
+	SDL_RenderFillRect(renderer, &squareFour);
+	SDL_RenderPresent(renderer);
+}
+
 void renderSquares()
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
@@ -132,18 +144,6 @@ int events(SDL_Event e)
 	return 0;
 }
 
-void resetSquares() {
-	SDL_SetRenderDrawColor(renderer, 0, 50, 0, 255);
-	SDL_RenderFillRect(renderer, &squareOne);
-	SDL_SetRenderDrawColor(renderer, 50, 50, 0, 255);
-	SDL_RenderFillRect(renderer, &squareTwo);
-	SDL_SetRenderDrawColor(renderer, 50, 0, 0, 255);
-	SDL_RenderFillRect(renderer, &squareThree);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 50, 255);
-	SDL_RenderFillRect(renderer, &squareFour);
-	SDL_RenderPresent(renderer);
-}
-
 void squareLight(int rgb[3], int rgbDim[3], SDL_Rect *square) {
 	SDL_SetRenderDrawColor(renderer, rgb[0], rgb[1], rgb[2], 255);
 	SDL_RenderFillRect(renderer, square);
@@ -155,12 +155,12 @@ void squareLight(int rgb[3], int rgbDim[3], SDL_Rect *square) {
 	SDL_RenderFillRect(renderer, square);
 	SDL_RenderPresent(renderer);
 
+	resetSquares();
 	SDL_Delay(250);
 }
 
 void playPattern() {
 	resetSquares();
-
 	SDL_Delay(1000);
 
 	squareLight(yellow, yellowDim, &squareTwo);

@@ -159,14 +159,43 @@ void squareLight(int rgb[3], int rgbDim[3], SDL_Rect *square) {
 	SDL_Delay(250);
 }
 
-void playPattern() {
+void playPattern(int pattern[100]) {
 	resetSquares();
 	SDL_Delay(1000);
 
-	squareLight(yellow, yellowDim, &squareTwo);
-	squareLight(red, redDim, &squareThree);
-	squareLight(red, redDim, &squareThree);
-	squareLight(blue, blueDim, &squareFour);
+	//printf("%d\n", pattern[0]);
+
+	int i;
+	for(i = 0; i <= 100; i++) {
+		resetSquares();
+
+		if(pattern[i] == 1) {
+			squareLight(green, greenDim, &squareOne);
+		}
+		else if(pattern[i] == 2) {
+			squareLight(yellow, yellowDim, &squareTwo);
+		}
+		else if(pattern[i] == 3) {
+			squareLight(red, redDim, &squareThree);
+		}
+		else if(pattern[i] == 4) {
+			squareLight(blue, blueDim, &squareFour);
+		}
+		else {
+			break;
+		}
+	}
+}
+
+int generate()
+{
+	int x = 0;
+
+	while(x == 0) {
+		x = rand() % 5;
+	}
+
+	return x;
 }
 
 int main(int argc, char *argv[])
@@ -175,28 +204,35 @@ int main(int argc, char *argv[])
 	renderSquares();
 
 	SDL_Event e;
-	int score = 0;
-	int roundOne[4] = {2, 3, 3, 4};
+	int selection;
+	int score = 0;	
+	int pattern[100];
+	int x = 0;
 
 	while(1) {
-		playPattern();
+		int num = generate();
+	
+		pattern[x] = num;
+		x++; 	
+			
+		playPattern(pattern);
 
 		int i = 0;
-		int selection;
-		
-		for(i = 0; i <= 3; i++) {
+		for(i = 0; i <= x; i++) { 
 			selection = 0;
 
 			while(selection == 0) {
 				selection = events(e);
 			}
 
-			if(selection == roundOne[i]) {
+			if(selection == pattern[i]) { 
 				score++;
 				
-				if(score == 4) {
-					SDL_ShowSimpleMessageBox(0, "Correct!", "Good job!", window);
+				if(score == x) {
+					//SDL_ShowSimpleMessageBox(0, "Correct!", "Good job!", window);
+					SDL_Delay(150);					
 					score = 0;
+					break;
 				}
 			}
 			else if(selection == 5) {
@@ -205,6 +241,8 @@ int main(int argc, char *argv[])
 			else {
 				SDL_ShowSimpleMessageBox(0, "Wrong!", "Incorrect! Start over..", window);
 				score = 0;
+				x = 0;
+				memset(pattern, 0, sizeof(int)*100);
 				break;
 			}
 		}

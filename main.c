@@ -163,8 +163,6 @@ void playPattern(int pattern[100]) {
 	resetSquares();
 	SDL_Delay(1000);
 
-	//printf("%d\n", pattern[0]);
-
 	int i;
 	for(i = 0; i <= 100; i++) {
 		resetSquares();
@@ -229,7 +227,6 @@ int main(int argc, char *argv[])
 				score++;
 				
 				if(score == x) {
-					//SDL_ShowSimpleMessageBox(0, "Correct!", "Good job!", window);
 					SDL_Delay(150);					
 					score = 0;
 					break;

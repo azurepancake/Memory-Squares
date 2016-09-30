@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 			
 		playPattern(pattern);
 
-		int i = 0;
+		int i;
 		for(i = 0; i <= x; i++) { 
 			selection = 0;
 
